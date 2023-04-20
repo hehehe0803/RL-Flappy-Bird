@@ -1,0 +1,2 @@
+For state, use h and v distance to next pipes.
+We also need a third state to stop flappy dying at the start
