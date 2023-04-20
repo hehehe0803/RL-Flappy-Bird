@@ -19,37 +19,37 @@ def draw_learning_curve(json_file, xlabel='Episodes', ylabel='Rewards', title='L
 
     plt.show()
 
-    def play():
-        env = flappy_bird_gym.make("FlappyBird-v0")
+def play():
+    env = flappy_bird_gym.make("FlappyBird-v0")
 
-        clock = pygame.time.Clock()
-        score = 0
+    clock = pygame.time.Clock()
+    score = 0
 
-        obs = env.reset()
-        while True:
+    obs = env.reset()
+    while True:
+        env.render()
+
+        # Getting action:
+        action = 0
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYDOWN and (
+                    event.key == pygame.K_SPACE or event.key == pygame.K_UP
+            ):
+                action = 1
+
+        # Processing:
+        obs, reward, done, info = env.step(action)
+
+        score += reward
+        print(f"Obs: {obs}\n" f"Score: {info}\n")
+
+        clock.tick(15)
+
+        if done:
             env.render()
+            time.sleep(0.5)
+            break
 
-            # Getting action:
-            action = 0
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                if event.type == pygame.KEYDOWN and (
-                        event.key == pygame.K_SPACE or event.key == pygame.K_UP
-                ):
-                    action = 1
-
-            # Processing:
-            obs, reward, done, info = env.step(action)
-
-            score += reward
-            print(f"Obs: {obs}\n" f"Score: {info}\n")
-
-            clock.tick(15)
-
-            if done:
-                env.render()
-                time.sleep(0.5)
-                break
-
-        env.close()
+    env.close()
