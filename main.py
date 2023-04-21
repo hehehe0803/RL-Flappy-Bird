@@ -1,28 +1,33 @@
-import time
-import flappy_bird_gymnasium
-import gymnasium
-from models.DQL import DQLAgent, DoubleDQLReplayAgent
+import flappy_bird_gym
+from ben_c_dqn import Agent
 
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1' # Run cuda on cpu
 
 MODEL_WEIGHTS_PATH = "model_weights/"
-REWARDS_PATH = "rewards_history/"
+HISTORY_PATH = "history/"
 
 
 if __name__ == '__main__':
     n_episodes = 100
 
-    env = gymnasium.make("FlappyBird-v0")
+    env = flappy_bird_gym.make("FlappyBird-v0")
 
     n_states = env.observation_space.shape[0]
     n_actions = env.action_space.n
-    ddqlr_agent = DoubleDQLReplayAgent(
-        gamma=0.9,
-        epsilon=0.3,
-        epsilon_decay=0.9995,
-        gap_penalty_w=0.1
+    agent = Agent(
+        alpha=1e-3,
+        gamma=0.95,
+        epsilon=1e-4,
+        epsilon_reduction=0,
+        epsilon_min=1e-4,
+        batch_size=32,
+        buffer_size=25000
     )
-    ddqlr_agent.train(env=env, n_episodes=2000, save_interval=100)
-    ddqlr_agent.save_model(MODEL_WEIGHTS_PATH + "DDQLReplay_final.h5")
-    ddqlr_agent.save_reward(REWARDS_PATH + "DDQLReplay_final.json")
+    agent.load_model(MODEL_WEIGHTS_PATH + "model_7400.h5")
+    agent.load_experience("memory/ddqlr_02_7400.plk")
+    agent.train(env=env, n_episodes=(20000 - 7400), save_interval=200)
+
+    env.close()
+
+    agent.save_model(MODEL_WEIGHTS_PATH + "ddqlr_02_final.h5")
