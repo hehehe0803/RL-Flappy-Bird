@@ -1,0 +1,22 @@
+{
+  "env_name": "FlappyBird-rgb-v0",
+  "agent_name": "RGBDQN",
+  "experiment_name": "rgbdqn_",
+  "gamma": 0.99,
+  "buffer_size": 1000,
+  "epsilon": {
+    "start": 0.1,
+    "end": 1e-4,
+    "step": 250,
+    "exploration_steps": 100
+  },
+  "image_scale": 0.5,
+  "epsilon_start": 0.20,
+  "epsilon_decay": 3.3e-5,
+  "epsilon_end": 0.01,
+  "batch_size": 32,
+  "learning_rate": 1e-3,
+  "optimizer": "Adam",
+  "loss": "mse",
+  "random_seed": 42
+}
