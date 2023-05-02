@@ -3,10 +3,10 @@ import json
 from typing import Dict, Union
 
 import flappy_bird_gym
-from models.rgb_dqn import RGBDQN
+import models
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1' # Run cuda on cpu
+os.environ['CUDA_VISIBLE_DEVICES'] = '0' # Run on cpu
 
 MODEL_WEIGHTS_PATH = "model_weights/"
 HISTORY_PATH = "history/"
@@ -19,7 +19,7 @@ def get_args() -> argparse.ArgumentParser:
     parser.add_argument(
         "--config_file",
         type=str,
-        default="RGBDQN.json",
+        default="dqn_03.json",
         help="Input config file"
     )
 
@@ -35,9 +35,9 @@ if __name__ == '__main__':
     cfg = get_config(get_args())
 
     env = flappy_bird_gym.make(cfg["env_name"])
-    agent = RGBDQN(cfg)
+    agent = getattr(models, cfg["agent_name"])(cfg)
     agent.train(env=env)
 
     env.close()
 
-    agent.save_model(MODEL_WEIGHTS_PATH + "rgbdql_final.h5")
+    agent.save_model(MODEL_WEIGHTS_PATH + "dqn_final.h5")
