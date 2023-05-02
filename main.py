@@ -1,28 +1,43 @@
-import time
-import flappy_bird_gymnasium
-import gymnasium
-from models.DQL import DQLAgent, DoubleDQLReplayAgent
+import argparse
+import json
+from typing import Dict, Union
+
+import flappy_bird_gym
+import models
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1' # Run cuda on cpu
+os.environ['CUDA_VISIBLE_DEVICES'] = '0' # Run on cpu
 
 MODEL_WEIGHTS_PATH = "model_weights/"
-REWARDS_PATH = "rewards_history/"
+HISTORY_PATH = "history/"
+CONFIG_PATH = "configs/"
 
-
-if __name__ == '__main__':
-    n_episodes = 100
-
-    env = gymnasium.make("FlappyBird-v0")
-
-    n_states = env.observation_space.shape[0]
-    n_actions = env.action_space.n
-    ddqlr_agent = DoubleDQLReplayAgent(
-        gamma=0.9,
-        epsilon=0.3,
-        epsilon_decay=0.9995,
-        gap_penalty_w=0.1
+def get_args() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        """Input config file"""
     )
-    ddqlr_agent.train(env=env, n_episodes=2000, save_interval=100)
-    ddqlr_agent.save_model(MODEL_WEIGHTS_PATH + "DDQLReplay_final.h5")
-    ddqlr_agent.save_reward(REWARDS_PATH + "DDQLReplay_final.json")
+    parser.add_argument(
+        "--config_file",
+        type=str,
+        default="dqn_03.json",
+        help="Input config file"
+    )
+
+    args = parser.parse_args()
+    return args
+
+def get_config(args) -> Dict[str, Union[str, int, Dict]]:
+    with open(CONFIG_PATH + args.config_file, 'r') as config_file:
+        cfg = json.load(config_file)
+
+    return cfg
+if __name__ == '__main__':
+    cfg = get_config(get_args())
+
+    env = flappy_bird_gym.make(cfg["env_name"])
+    agent = getattr(models, cfg["agent_name"])(cfg)
+    agent.train(env=env)
+
+    env.close()
+
+    agent.save_model(MODEL_WEIGHTS_PATH + "dqn_final.h5")
