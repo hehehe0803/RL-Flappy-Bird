@@ -2,7 +2,7 @@
 This project aims to teach an agent to play the popular game Flappy Bird using reinforcement learning with different algorithms and compare their results. The project is implemented in Python 3.9 and requires the following dependencies:
 ## Prerequisites
 - Python 3.9 or later
-- flappy-bird-gymnasium==0.2.1
+- flappy-bird-gym
 ## Setup
 1. Clone the repository to your local machine.
 2. Create a virtual environment `venv` inside the repo directory to contain all the dependencies with:
@@ -18,6 +18,10 @@ $ python -m venv venv
 ```
 $ pip install -r requirements.txt
 ```
+## Training DDQN for features state space
+Choose one of the configurations in the `config/` folder, then run:
+```python main.py --config_file <config>```
+
 ## Setup - cnn_dqn.py
 
 To run cnn_dqn, please install the following dependencies:
