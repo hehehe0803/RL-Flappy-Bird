@@ -34,5 +34,26 @@ flappy-bird-gymnasium
 
 Following that, go to Lib/site-packages/flappy_bird_gymnasium/evs/renderer.py and change the value of `[43] FILL_BACKGROUND_COLOR` (line 43) to `(0, 0, 0)`
 
+## Setup - Tabular methods
+Requirements:
+```
+flappy-bird-gym
+gym
+numpy
+pygame
+matplotlib
+```
+flappy-bird-gym installation:
+```$ pip install --no-dependencies flappy-bird-gym```
+
+To test an agent's Q_table performance run "validate_agent_test.py" and select the appropriate Q_table from the comments:
+
+```
+# give Q_table file name
+#q_table_name = "Q_table_Q_lambda.json"
+#q_table_name = "Q_table_SARSA_lambda.json"
+```
+The agents are in the files "Q_lambda_agent.py" and "SARSA_lambda_agent.py"
+
 ## Acknowledgments
 This project is inspired by the original Flappy Bird game created by Dong Nguyen.
