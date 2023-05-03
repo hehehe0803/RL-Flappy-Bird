@@ -18,5 +18,17 @@ $ python -m venv venv
 ```
 $ pip install -r requirements.txt
 ```
+## Setup - cnn_dqn.py
+
+To run cnn_dqn, please install the following dependencies:
+```
+numpy
+tensorflow
+opencv-python-headless
+flappy-bird-gymnasium
+```
+
+Following that, go to Lib/site-packages/flappy_bird_gymnasium/evs/renderer.py and change the value of `[43] FILL_BACKGROUND_COLOR` (line 43) to `(0, 0, 0)`
+
 ## Acknowledgments
 This project is inspired by the original Flappy Bird game created by Dong Nguyen.
